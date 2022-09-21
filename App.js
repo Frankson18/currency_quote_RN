@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import ListItem from './components/ListItem';
 
@@ -8,13 +8,15 @@ export default function App() {
 
   useEffect(function () {
     async function getData() {
-      const response = await fetch('https://economia.awesomeapi.com.br/JSON/BTC-BRL');
-      const Data = await response.json();
+      const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL');
+      const aux = await response.json();
+      var Data = [];
+      Data = [...Data,aux.USDBRL,aux.EURBRL,aux.BTCBRL];
       setData(Data);
     }
     getData();
   }, []);
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleWrapper}>
