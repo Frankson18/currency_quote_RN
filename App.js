@@ -6,12 +6,17 @@ export default function App() {
 
   const [Data, setData] = useState([]);
 
+  const imgUri = ["http://www.blogdarisonisantos.com/images/2018/01/cifrao.png",
+  "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Euro-EUR-icon.png",
+  "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+  "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/256/Ethereum-ETH-icon.png"];
+
   useEffect(function () {
     async function getData() {
-      const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL');
+      const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL,ETH-BRL');
       const aux = await response.json();
       var Data = [];
-      Data = [...Data,aux.USDBRL,aux.EURBRL,aux.BTCBRL];
+      Data = [...Data, aux.USDBRL, aux.EURBRL, aux.BTCBRL, aux.ETHBRL];
       setData(Data);
     }
     getData();
@@ -20,20 +25,20 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleWrapper}>
-        <Text style={styles.largeTitle}>Markets</Text>
+        <Text style={styles.largeTitle}>Currency Quote</Text>
       </View>
       <View style={styles.divider} />
       <FlatList
         key="portrait"
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.key}
         data={Data}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <ListItem
-            name={item.code}
+            name={item.name.split('/')[0]}
             symbol={item.code}
-            currentPrice={item.bid}
+            currentPrice={parseFloat(item.bid).toFixed(2)}
             priceChange={item.pctChange}
-            logoUri="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
+            logoUri={imgUri[index]}
           />
         )}
       />
@@ -44,20 +49,22 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#091018',
   },
   titleWrapper: {
-    marginTop: 20,
+    marginTop: 30,
     paddingHorizontal: 16,
   },
   largeTitle: {
     fontSize: 24,
     fontWeight: 'bold',
+    color: '#fff'
   },
   divider: {
     height: 1,
     backgroundColor: '#A9ABB1',
     marginHorizontal: 16,
-    marginTop: 16,
+    marginTop: 10,
+    marginBottom:10
   }
 });
