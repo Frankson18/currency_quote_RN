@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 export default function ListItem({ name, symbol, currentPrice, priceChange, logoUri,codein, navigation }) {
     const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
+
+    const [data, setData] = useState([]);
+
+    useEffect(function () {
+        async function getData() {
+            const url = 'https://economia.awesomeapi.com.br/json/daily/' + symbol + '-' + codein + '/7';
+            const response = await fetch(url);
+            const data = await response.json();
+            setData(data);
+        }
+        getData();
+    }, []);
+
     return (
         <TouchableOpacity style={styles.buttom}
             onPress={() => navigation.navigate('Historic', {
@@ -11,7 +24,7 @@ export default function ListItem({ name, symbol, currentPrice, priceChange, logo
                 currentPrice: currentPrice,
                 priceChange: priceChange,
                 logoUri: logoUri,
-                codein: codein
+                data: {data}
 
             })}>
             <View style={styles.itemWrapper}>

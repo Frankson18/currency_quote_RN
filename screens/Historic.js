@@ -1,21 +1,45 @@
-import react, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import react from "react";
+import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+
+import {
+    LineChart,
+    BarChart,
+    PieChart,
+    ProgressChart,
+    ContributionGraph,
+    StackedBarChart
+} from "react-native-chart-kit";
 
 export default function Historic({ navigation, route }) {
-    const { name, symbol, currentPrice, priceChange, logoUri, codein } = route.params;
+    const { name, symbol, currentPrice, priceChange, logoUri, data } = route.params;
     const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
+    const data1 = {
+        datasets: [
+            {data:[data.data[0].bid,
+                data.data[1].bid,
+                data.data[2].bid,
+                data.data[3].bid,
+                data.data[4].bid,
+                data.data[5].bid,
+                data.data[6].bid
+            ]}
+        ],
+    };
 
-    const [data, setData] = useState([]);
+    const screenWidth = Dimensions.get("window").width;
 
-    useEffect(function () {
-        async function getData() {
-            const url = 'https://economia.awesomeapi.com.br/json/daily/'+symbol+'-'+codein+'/30';
-            const response = await fetch(url);
-            const data = await response.json();
-            setData(data);
-        }
-        getData();
-    }, []);
+    const chartConfig = {
+        backgroundColor: "#000",
+        backgroundGradientFrom: "#091018",
+        backgroundGradientTo: "#0061FF",
+        backgroundGradientToOpacity: 0.5,
+        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+        strokeWidth: 2,
+        decimalPlaces: 0,
+        barPercentage: 0.5,
+        useShadowColorFromDataset: false
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.itemWrapper}>
@@ -31,6 +55,23 @@ export default function Historic({ navigation, route }) {
                     <Text style={styles.title}>R$ {currentPrice}</Text>
                     <Text style={[styles.subtitle, { color: priceChangeColor }]}>{priceChange}%</Text>
                 </View>
+            </View>
+            <View>
+                <LineChart
+                    data={data1}
+                    width={Dimensions.get("window").width}
+                    height={220}
+                    yAxisLabel="R$"
+                    yAxisInterval={1} // optional, defaults to 1
+                    chartConfig={chartConfig}
+                    bezier
+                    withVerticalLines={false}
+                    withHorizontalLines={false}
+                    style={{
+                        marginVertical: 16,
+                        borderRadius: 16,
+                    }}
+                />
             </View>
         </View>
     );
