@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import ListItem from '../components/ListItem';
 
-export default function App() {
-
-  const [data, setData] = useState([]);
+export default function App({navigation}) {
 
   const imgUri = ["http://www.blogdarisonisantos.com/images/2018/01/cifrao.png",
   "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Euro-EUR-icon.png",
   "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
   "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/256/Ethereum-ETH-icon.png"];
+
+  const [data, setData] = useState([]);
 
   useEffect(function () {
     async function getData() {
@@ -29,16 +29,17 @@ export default function App() {
       </View>
       <View style={styles.divider} />
       <FlatList
-        key="portrait"
-        keyExtractor={(item) => item.key}
+        keyExtractor={(item) => item.code}
         data={data}
         renderItem={({ item, index }) => (
           <ListItem
-            name={item.name.split('/')[0]}
+            name={item.name}
             symbol={item.code}
-            currentPrice={parseFloat(item.bid).toFixed(2)}
+            currentPrice={item.bid}
             priceChange={item.pctChange}
             logoUri={imgUri[index]}
+            codein = {item.codein}
+            navigation={navigation}
           />
         )}
       />
