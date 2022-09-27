@@ -15,14 +15,16 @@ export default function Historic({ navigation, route }) {
     const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
     const data1 = {
         datasets: [
-            {data:[data.data[0].bid,
+            {
+                data: [data.data[0].bid,
                 data.data[1].bid,
                 data.data[2].bid,
                 data.data[3].bid,
                 data.data[4].bid,
                 data.data[5].bid,
                 data.data[6].bid
-            ]}
+                ]
+            }
         ],
     };
 
@@ -56,23 +58,22 @@ export default function Historic({ navigation, route }) {
                     <Text style={[styles.subtitle, { color: priceChangeColor }]}>{priceChange}%</Text>
                 </View>
             </View>
-            <View>
-                <LineChart
-                    data={data1}
-                    width={Dimensions.get("window").width}
-                    height={220}
-                    yAxisLabel="R$"
-                    yAxisInterval={1} // optional, defaults to 1
-                    chartConfig={chartConfig}
-                    bezier
-                    withVerticalLines={false}
-                    withHorizontalLines={false}
-                    style={{
-                        marginVertical: 16,
-                        borderRadius: 16,
-                    }}
-                />
-            </View>
+            <LineChart
+                data={data1}
+                width={375}
+                height={220}
+                yAxisLabel="R$"
+                yAxisInterval={1} // optional, defaults to 1
+                chartConfig={chartConfig}
+                bezier
+                withVerticalLines={false}
+                withHorizontalLines={false}
+                style={{
+                    marginVertical: 10,
+                    borderRadius: 16,
+                    alignItems: 'center'
+                }}
+            />
         </View>
     );
 }
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#091018',
+        paddingHorizontal: 10
     },
     buttom: {
         justifyContent: "center",
