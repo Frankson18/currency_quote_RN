@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
 
-export default function ListItem({ name, symbol, currentPrice, priceChange, logoUri,codein, navigation }) {
+
+export default function ListItem({ name, symbol, currentPrice, priceChange, logoUri, codein, navigation }) {
     const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
+    const arrowChange = priceChange > 0 ? { color: '#03DAC5' } : { color: '#B00020', transform: [{ rotateX: '180deg' }], position: 'absolute', left: -6 };
 
     const [data, setData] = useState([]);
 
@@ -15,7 +18,7 @@ export default function ListItem({ name, symbol, currentPrice, priceChange, logo
         }
         getData();
     }, []);
-
+    
     return (
         <TouchableOpacity style={styles.buttom}
             onPress={() => navigation.navigate('Historic', {
@@ -24,7 +27,7 @@ export default function ListItem({ name, symbol, currentPrice, priceChange, logo
                 currentPrice: currentPrice,
                 priceChange: priceChange,
                 logoUri: logoUri,
-                data: {data}
+                data: { data }
 
             })}>
             <View style={styles.itemWrapper}>
@@ -38,7 +41,10 @@ export default function ListItem({ name, symbol, currentPrice, priceChange, logo
 
                 <View style={styles.rightWrapper}>
                     <Text style={styles.title}>R$ {currentPrice}</Text>
-                    <Text style={[styles.subtitle, { color: priceChangeColor }]}>{priceChange}%</Text>
+                    <View style={styles.priceChange}>
+                        <FontAwesome5 name='arrow-up' size={10} color='white' style={arrowChange} />
+                        <Text style={[styles.subtitle, { color: priceChangeColor }]}>{String(priceChange).replace('-', '')}%</Text>
+                    </View>
                 </View>
             </View>
         </TouchableOpacity>
@@ -79,11 +85,16 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     subtitle: {
-        marginTop: 4,
+        marginLeft: 5,
         fontSize: 14,
         color: '#A9ABB1'
     },
     rightWrapper: {
         alignItems: 'flex-end'
     },
+    priceChange: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 5,
+    }
 });
