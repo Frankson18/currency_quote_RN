@@ -1,22 +1,50 @@
-import React from "react";
-import {View, Text, StyleSheet, TouchableOpacity,Image} from 'react-native';
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons';
 
-export default function ListItem({name, symbol, currentPrice, priceChange, logoUri}) {
+
+export default function ListItem({ name, symbol, currentPrice, priceChange, logoUri, codein, navigation }) {
     const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
-    return(
-        <TouchableOpacity style={styles.buttom}>
+    const arrowChange = priceChange > 0 ? { color: '#03DAC5' } : { color: '#B00020', transform: [{ rotateX: '180deg' }], position: 'absolute', left: -6 };
+
+    const [data, setData] = useState([]);
+
+    useEffect(function () {
+        async function getData() {
+            const url = 'https://economia.awesomeapi.com.br/json/daily/' + symbol + '-' + codein + '/7';
+            const response = await fetch(url);
+            const data = await response.json();
+            setData(data);
+        }
+        getData();
+    }, []);
+    
+    return (
+        <TouchableOpacity style={styles.buttom}
+            onPress={() => navigation.navigate('Historic', {
+                name: name,
+                symbol: symbol,
+                currentPrice: currentPrice,
+                priceChange: priceChange,
+                logoUri: logoUri,
+                data: { data }
+
+            })}>
             <View style={styles.itemWrapper}>
                 <View style={styles.leftWrapper}>
-                    <Image style={ styles.image} source={{uri: logoUri }}/>
+                    <Image style={styles.image} source={{ uri: logoUri }} />
                     <View style={styles.titleWrapper}>
-                        <Text style={styles.title}> {name}</Text>
+                        <Text style={styles.title}> {name.split('/')[0]}</Text>
                         <Text style={styles.subtitle}> {symbol}</Text>
                     </View>
                 </View>
 
                 <View style={styles.rightWrapper}>
                     <Text style={styles.title}>R$ {currentPrice}</Text>
-                    <Text style={[styles.subtitle, {color: priceChangeColor}]}>{priceChange}%</Text>
+                    <View style={styles.priceChange}>
+                        <FontAwesome5 name='arrow-up' size={10} color='white' style={arrowChange} />
+                        <Text style={[styles.subtitle, { color: priceChangeColor }]}>{String(priceChange).replace('-', '')}%</Text>
+                    </View>
                 </View>
             </View>
         </TouchableOpacity>
@@ -24,15 +52,15 @@ export default function ListItem({name, symbol, currentPrice, priceChange, logoU
 }
 
 const styles = StyleSheet.create({
-    buttom:{
+    buttom: {
         justifyContent: "center",
-        marginBottom:10,
-        paddingHorizontal:16
+        marginBottom: 10,
+        paddingHorizontal: 16
     },
-    itemWrapper:{
-        paddingVertical:10,
-        paddingHorizontal:5,
-        flexDirection:'row',
+    itemWrapper: {
+        paddingVertical: 10,
+        paddingHorizontal: 5,
+        flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderColor: '#A9ABB1',
@@ -40,28 +68,33 @@ const styles = StyleSheet.create({
         borderRadius: 10,
 
     },
-    leftWrapper:{
+    leftWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
     },
-    image:{
-        height:48,
+    image: {
+        height: 48,
         width: 48,
         resizeMode: 'stretch'
     },
-    titleWrapper:{
+    titleWrapper: {
         marginLeft: 8,
     },
-    title:{
+    title: {
         fontSize: 18,
         color: '#fff'
     },
-    subtitle:{
-        marginTop:4,
+    subtitle: {
+        marginLeft: 5,
         fontSize: 14,
         color: '#A9ABB1'
     },
-    rightWrapper:{
+    rightWrapper: {
         alignItems: 'flex-end'
     },
+    priceChange: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 5,
+    }
 });

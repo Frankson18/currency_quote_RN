@@ -1,17 +1,28 @@
 import React from "react";
 
 import {NavigationContainer} from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator,CardStyleInterpolators} from "@react-navigation/stack";
 
 import HomeScreen from './screens/HomeScreen';
+import Historic from "./screens/Historic";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return(
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}}/>
+      <Stack.Navigator screenOptions={{cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid}}>
+        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false,}}/>
+        <Stack.Screen name="Historic" component={Historic} options={
+          {headerStyle: {
+            backgroundColor: '#000',
+          },
+          headerTitleStyle: {
+            color:'#fff'
+          },
+          headerTintColor: '#fff',
+          headerTitleAlign: "center"
+          }}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
