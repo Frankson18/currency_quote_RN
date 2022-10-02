@@ -5,7 +5,23 @@ import { LineChart, } from "react-native-chart-kit";
 export default function Historic({ navigation, route }) {
     const { name, symbol, currentPrice, priceChange, logoUri, data } = route.params;
     const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
+
+    const getDay = (date) => {
+        var timestamp = date * 1000
+        var date = new Date(timestamp);
+
+        return String(date).substr(8, 2)
+    };
+
     const data1 = {
+        labels: [getDay(data.data[6].timestamp),
+        getDay(data.data[5].timestamp),
+        getDay(data.data[4].timestamp),
+        getDay(data.data[3].timestamp),
+        getDay(data.data[2].timestamp),
+        getDay(data.data[1].timestamp),
+        getDay(data.data[0].timestamp)],
+        
         datasets: [
             {
                 data: [data.data[6].bid,
@@ -19,6 +35,26 @@ export default function Historic({ navigation, route }) {
             }
         ],
     };
+
+    const variationPrice = data.data[0].bid - data.data[6].bid;
+
+    const conservativeProfile = () => {
+        if (variationPrice > 0 && variationPrice < 0.3) {
+            return (
+                <View style={styles.conservativeProfile}>
+                    <Text style={styles.textProfile}>Esse é o melhor momento para investir nessa moeda se você é:</Text>
+                    <Text style={styles.conservativeProfileText}>Perfil Conservador</Text>
+                </View>
+            )
+        } else {
+            return (
+                <View style={styles.conservativeProfile}>
+                    <Text style={styles.textProfile}>Esse é o melhor momento para investir nessa moeda se você é:</Text>
+                    <Text style={styles.conservativeProfileText}>Perfil Arrojado</Text>
+                </View>
+            )
+        }
+    }
 
     const screenWidth = Dimensions.get("window").width;
 
@@ -37,27 +73,31 @@ export default function Historic({ navigation, route }) {
     return (
         <View style={styles.container}>
             <View style={styles.titleHeader}>
-                <Image style={styles.image} source={{ uri: logoUri }} />
                 <View>
-                    <Text style={styles.title}> {name.split('/')[0]} ({symbol})</Text>
-                    <Text style={{ color: '#A9ABB1', paddingLeft: 8, }}>7 d</Text>
+                    <Text style={styles.title}>{name.split('/')[0]} ({symbol})</Text>
                 </View>
             </View>
-            <LineChart
-                data={data1}
-                width={375}
-                height={220}
-                yAxisLabel="R$"
-                yAxisInterval={1}
-                chartConfig={chartConfig}
-                bezier
-                withVerticalLines={false}
-                style={{
-                    marginVertical: 10,
-                    borderRadius: 16,
-                    alignItems: 'center'
-                }}
-            />
+            <View style={styles.chartWrapper}>
+                <LineChart
+                    data={data1}
+                    width= {screenWidth}
+                    height={220}
+                    yAxisLabel="R$"
+                    yAxisInterval={1}
+                    xAxisLabel={data.data[6].date}
+                    chartConfig={chartConfig}
+                    bezier
+                    withVerticalLines={true}
+                    style={{
+                        marginVertical: 16,
+                        borderRadius: 16,
+                        alignItems: 'center',
+                        borderRadius: 10,
+                    }}
+                />
+               <Text style={[styles.chartSubtitle, {color: priceChangeColor} ]}>7 D</Text>
+               {conservativeProfile()}
+            </View>
         </View>
     );
 }
@@ -71,18 +111,40 @@ const styles = StyleSheet.create({
     titleHeader: {
         flexDirection: 'row',
         alignItems: "center",
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         paddingHorizontal: 5,
-        marginTop: 10
-    },
-    image: {
-        height: 48,
-        width: 48,
-        resizeMode: 'stretch'
+        marginVertical: 16
     },
     title: {
         fontSize: 28,
         color: '#fff',
         fontWeight: "bold"
     },
+    chartWrapper: {
+        borderRadius: 10,
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    chartSubtitle: {
+        padding: 8,
+        fontSize: 16,
+        fontWeight: 'bold',
+        borderRadius: 10,
+    },
+    conservativeProfile: {
+        backgroundColor: '#03DAC5',
+        padding: 8,
+        borderRadius: 10,
+        marginTop: 10
+    },
+    textProfile: {
+        color: '#000',
+        fontSize: 16,
+    },
+    conservativeProfileText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#000'
+    }
 });

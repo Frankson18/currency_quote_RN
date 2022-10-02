@@ -25,9 +25,9 @@ export default function App({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleWrapper}>
-        <Text style={styles.largeTitle}>Currency Quote</Text>
+        <Text style={styles.largeTitle}>INVESTIR AGORA</Text>
+        <Text style={styles.subscription}>Informações em tempo real para você decidir investir na melhor moeda, no seu melhor momento 💰</Text>
       </View>
-      <View style={styles.divider} />
       <FlatList
         keyExtractor={(item) => item.code}
         data={data}
@@ -57,9 +57,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   largeTitle: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff'
+    color: '#fff',
+  },
+  subscription: {
+    fontSize: 16,
+    color: '#fff',
+    opacity: 0.5,
+    paddingTop: 8,
+    paddingBottom: 24,
   },
   divider: {
     height: 1,

@@ -18,10 +18,9 @@ export default function App() {
             backgroundColor: '#000',
           },
           headerTitleStyle: {
-            color:'#fff'
+            opacity: 0,
           },
           headerTintColor: '#fff',
-          headerTitleAlign: "center"
           }}/>
       </Stack.Navigator>
     </NavigationContainer>
