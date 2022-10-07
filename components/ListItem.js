@@ -19,6 +19,13 @@ export default function ListItem({ name, symbol, currentPrice, priceChange, logo
         getData();
     }, []);
 
+    function currentPriceBug (currentPrice,symbol){
+        if(symbol === 'BTC' || symbol === 'ETH'){
+            return parseFloat(currentPrice).toFixed(2) + ' k';
+        }
+        return parseFloat(currentPrice).toFixed(2);
+        
+    }
     return (
         <TouchableOpacity style={styles.buttom}
             onPress={() => navigation.navigate('Historic', {
@@ -41,7 +48,7 @@ export default function ListItem({ name, symbol, currentPrice, priceChange, logo
                     </View>
                 </View>
                 <View style={styles.rightWrapper}>
-                    <Text style={styles.title}>R$ {currentPrice}</Text>
+                    <Text style={styles.title}>R$ {currentPriceBug(currentPrice,symbol)}</Text>
                     <Text style={styles.subtitleMore}>Saber mais</Text>
                 </View>
             </View>
@@ -57,7 +64,7 @@ const styles = StyleSheet.create({
     },
     itemWrapper: {
         paddingVertical: 10,
-        paddingHorizontal: 5,
+        paddingHorizontal: 15,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -88,6 +95,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#fff',
         marginTop: 5,
+        opacity: 0.5,
     },
     rightWrapper: {
         alignItems: 'flex-end'

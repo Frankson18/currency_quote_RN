@@ -1,10 +1,17 @@
 import react from "react";
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions, ViewComponent } from "react-native";
 import { LineChart, } from "react-native-chart-kit";
 
 export default function Historic({ navigation, route }) {
-    const { name, symbol, currentPrice, priceChange, logoUri, data } = route.params;
+    const { name, symbol, priceChange, logoUri, data } = route.params;
     const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
+
+    function currentPriceBug(symbol) {
+        if (symbol === 'BTC' || symbol === 'ETH') {
+            return ' k';
+        }
+        return '';
+    }
 
     const getDay = (date) => {
         var timestamp = date * 1000
@@ -21,7 +28,7 @@ export default function Historic({ navigation, route }) {
         getDay(data.data[2].timestamp),
         getDay(data.data[1].timestamp),
         getDay(data.data[0].timestamp)],
-        
+
         datasets: [
             {
                 data: [data.data[6].bid,
@@ -31,7 +38,8 @@ export default function Historic({ navigation, route }) {
                 data.data[2].bid,
                 data.data[1].bid,
                 data.data[0].bid
-                ]
+                ],
+                strokeWidth: 5
             }
         ],
     };
@@ -56,18 +64,17 @@ export default function Historic({ navigation, route }) {
         }
     }
 
-    const screenWidth = Dimensions.get("window").width;
+    const screenWidth = Dimensions.get("window").width - 40;
 
     const chartConfig = {
-        backgroundColor: "#000",
+        backgroundColor: "#091018",
         backgroundGradientFrom: "#091018",
-        backgroundGradientTo: "#0061FF",
-        backgroundGradientToOpacity: 0.5,
+        backgroundGradientTo: "#091018",
         color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
         strokeWidth: 2,
         decimalPlaces: 2,
         barPercentage: 0.5,
-        useShadowColorFromDataset: false
+        useShadowColorFromDataset: false,
     };
 
     return (
@@ -78,25 +85,28 @@ export default function Historic({ navigation, route }) {
                 </View>
             </View>
             <View style={styles.chartWrapper}>
-                <LineChart
-                    data={data1}
-                    width= {screenWidth}
-                    height={220}
-                    yAxisLabel="R$"
-                    yAxisInterval={1}
-                    xAxisLabel={data.data[6].date}
-                    chartConfig={chartConfig}
-                    bezier
-                    withVerticalLines={true}
-                    style={{
-                        marginVertical: 16,
-                        borderRadius: 16,
-                        alignItems: 'center',
-                        borderRadius: 10,
-                    }}
-                />
-               <Text style={[styles.chartSubtitle, {color: priceChangeColor} ]}>7 D</Text>
-               {conservativeProfile()}
+                <View style={styles.shadow}>
+                    <LineChart
+                        data={data1}
+                        width={screenWidth}
+                        height={220}
+                        yAxisLabel="R$"
+                        yAxisSuffix={currentPriceBug(symbol)}
+                        yAxisInterval={1}
+                        chartConfig={chartConfig}
+                        bezier
+                        withVerticalLines={true}
+                        style={{
+                            marginVertical: 16,
+                            borderRadius: 16,
+                            alignItems: 'center',
+                            borderRadius: 10,
+                            margin: 10,
+                        }}
+                    />
+                </View>
+                <Text style={[styles.chartSubtitle, { color: 'white' }]}>7 D</Text>
+                {conservativeProfile()}
             </View>
         </View>
     );
@@ -133,7 +143,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     conservativeProfile: {
-        backgroundColor: '#03DAC5',
+        backgroundColor: 'white',
         padding: 8,
         borderRadius: 10,
         marginTop: 10
@@ -146,5 +156,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: '#000'
+    },
+    shadow: {
+        shadowColor: 'black',
+        borderColor: 'black',
+        elevation: 2,
+        borderRadius: 2,
+        shadowRadius: 2,
+        border:2
     }
 });

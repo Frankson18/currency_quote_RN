@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#091018',
   },
   titleWrapper: {
-    marginTop: 30,
+    marginTop: 40,
     paddingHorizontal: 16,
   },
   largeTitle: {
-    fontSize: 16,
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#fff',
   },
