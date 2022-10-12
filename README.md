@@ -49,7 +49,9 @@ para o usuário uma dica para possivel investimento.
 - [Frankson Souza](https://github.com/Frankson18) 
 - [Tiago Oliveira](https://www.linkedin.com/in/tiagolivesan/)
 
+## Overview
 
+[![Watch the video](./img/teste.png)](https://www.youtube.com/watch?v=CY8-4WvE9Zk&ab_channel=FuturoS%C3%AAnior)
 
 
 
