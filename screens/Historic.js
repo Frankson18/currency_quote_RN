@@ -21,24 +21,14 @@ export default function Historic({ navigation, route }) {
     };
 
     const data1 = {
-        labels: [getDay(data.data[6].timestamp),
-        getDay(data.data[5].timestamp),
-        getDay(data.data[4].timestamp),
-        getDay(data.data[3].timestamp),
-        getDay(data.data[2].timestamp),
-        getDay(data.data[1].timestamp),
-        getDay(data.data[0].timestamp)],
-
+        labels: data.data.map(function(key) {
+            return getDay(key.timestamp);
+          }).reverse(),
         datasets: [
             {
-                data: [data.data[6].bid,
-                data.data[5].bid,
-                data.data[4].bid,
-                data.data[3].bid,
-                data.data[2].bid,
-                data.data[1].bid,
-                data.data[0].bid
-                ],
+                data: data.data.map(function(key) {
+                    return key.bid;
+                  }).reverse(),
                 strokeWidth: 5
             }
         ],
