@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { FlatList, StyleSheet, Text, View, SafeAreaView, Button } from 'react-native';
 import ListItem from '../components/ListItem';
 
 export default function App({ navigation }) {
@@ -46,6 +46,9 @@ export default function App({ navigation }) {
           />
         )}
       />
+      <View style={styles.footer}>
+        <Button>Fazer login com o Google</Button>
+      </View>
     </SafeAreaView>
   );
 }
