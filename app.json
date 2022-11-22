@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "currency_quote",
-    "slug": "currency_quote",
+    "slug": "currencyquote",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

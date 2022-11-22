@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { FlatList, StyleSheet, Text, View, SafeAreaView, Button } from 'react-native';
 import ListItem from '../components/ListItem';
+import { AuthProvider } from '../hooks/auth';
+import SignIn from './SignIn';
 
 export default function App({ navigation }) {
 
@@ -9,7 +11,7 @@ export default function App({ navigation }) {
     "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
     "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/256/Ethereum-ETH-icon.png"];
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([] as any);
 
   useEffect(function () {
     async function getData() {
@@ -36,8 +38,8 @@ export default function App({ navigation }) {
         data={data}
         renderItem={({ item, index }) => (
           <ListItem
-            name={item.name}
-            symbol={item.code}
+            name={item.name as string}   
+            symbol={item.code as number}
             currentPrice={item.bid}
             priceChange={item.pctChange}
             logoUri={imgUri[index]}
@@ -46,6 +48,9 @@ export default function App({ navigation }) {
           />
         )}
       />
+      <AuthProvider>
+          <SignIn />
+        </AuthProvider>
     </SafeAreaView>
   );
 }
