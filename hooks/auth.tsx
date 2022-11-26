@@ -9,6 +9,7 @@ interface AuthProviderProps {
 interface User {
   id: string;
   name: string;
+  lastName?: string;
   email: string;
   photo?: string;
 }
@@ -18,31 +19,46 @@ interface IAuthContextData {
   signInWithGoogle(): Promise<void>;
 }
 
+interface AuthorizationResponse {
+  params: {
+    access_token: string;
+  };
+  type: string;
+}
+
 const AuthContext = createContext({} as IAuthContextData);
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const user = {
-    id: '1',
-    name: 'John Doe',
-    email: 'johnDoe@mail.com',
-  };
+  const [user, setUser] = React.useState<User>({} as User);
+  console.log("user", user);
 
   async function signInWithGoogle() {
     try {
-      const CLIENT_ID = '277679707012-pu6nf0kjtku3a77ncaf67pie9mi5s8s3.apps.googleusercontent.com';
-      const REDIRECT_URI = 'https://auth.expo.io/@futurosenior/currencyquote';
+      const CLIENT_ID = '277679707012-pu6nf0kjtku3a77ncaf67pie9mi5s8s3.apps.googleusercontent.com'
+      const REDIRECT_URI = 'https://auth.expo.io/@futurosenior/currency_quote'
       const RESPONSE_TYPE = 'token';
       const SCOPE = encodeURI('profile email');
 
       const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
 
-      const response = await AuthSession.startAsync({ authUrl });
-      console.log("response", response);
+      const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthorizationResponse;
+
+      if (type === 'success') {
+        const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
+        const userInfo = await response.json();
+
+        setUser({
+          id: userInfo.id,
+          name: userInfo.given_name,
+          lastName: userInfo.family_name,
+          email: userInfo.email,
+          photo: userInfo.picture,
+        });
+      }
 
     } catch (error) {
-      throw new Error(error);
+      throw new Error()
     }
-    
   }
 
   return (
