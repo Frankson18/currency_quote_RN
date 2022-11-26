@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
+import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
+
+import { db, getDoc, doc, setDoc } from '../firebase';
 
 
-export default function ListItem({ name, symbol, currentPrice, priceChange, logoUri, codein, navigation }) {
-    const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
-    const arrowChange = priceChange > 0 ? { color: '#03DAC5' } : { color: '#B00020', transform: [{ rotateX: '180deg' }] };
+export default function ListItem({ name, symbol, currentPrice, priceChange, logoUri, codein, index, navigation }) {
 
     const [data, setData] = useState([]);
+    const [fav, setFav] = useState();
+    const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
+    const arrowChange = priceChange > 0 ? { color: '#03DAC5' } : { color: '#B00020', transform: [{ rotateX: '180deg' }] };
+    const iconName = fav ? "star-o" : "star";
+    const ref = doc(db, "favoritos", index.toString());
 
     useEffect(function () {
         async function getData() {
@@ -17,6 +22,15 @@ export default function ListItem({ name, symbol, currentPrice, priceChange, logo
             setData(data);
         }
         getData();
+        async function getFav() {
+            const docSnap = await getDoc(ref);
+            if (docSnap.exists()) {
+                setFav(!docSnap.data().fav) 
+            } else {
+                console.log("No such document!");
+            }
+        }
+        getFav()
     }, []);
 
     function currentPriceBug(currentPrice, symbol) {
@@ -24,8 +38,13 @@ export default function ListItem({ name, symbol, currentPrice, priceChange, logo
             return parseFloat(currentPrice).toFixed(2) + ' k';
         }
         return parseFloat(currentPrice).toFixed(2);
-
     }
+    
+    async function updatefav() {
+        setFav(!fav);
+        await setDoc(ref, { fav: fav, index: index });
+    }
+
     return (
         <TouchableOpacity style={styles.buttom}
             onPress={() => navigation.navigate('Historic', {
@@ -42,15 +61,16 @@ export default function ListItem({ name, symbol, currentPrice, priceChange, logo
                     <View style={styles.titleWrapper}>
                         <Text style={styles.title}>{name.split('/')[0]}</Text>
                         <View style={styles.priceChange}>
+                            <Pressable onPress={() => updatefav()} style={styles.favoritos}>
+                                <FontAwesome name={iconName} size={24} color="yellow" />
+                            </Pressable>
                             <FontAwesome5 name='arrow-up' size={10} color='white' style={arrowChange} />
                             <Text style={[styles.subtitle, { color: priceChangeColor }]}>{String(priceChange).replace('-', '')}%</Text>
                         </View>
                     </View>
                 </View>
                 <View style={styles.rightWrapper}>
-                    <TouchableOpacity onPress={() => console.log('teste')}>
-                        <FontAwesome5 name="star" size={15} color='yellow' style={styles.favorites} />
-                    </TouchableOpacity>
+
                     <Text style={styles.title}>R$ {currentPriceBug(currentPrice, symbol)}</Text>
                     <Text style={styles.subtitleMore}>Saber mais</Text>
                 </View>
@@ -108,7 +128,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         marginTop: 5,
     },
-    favorites:{
-
+    favoritos: {
+        marginRight: 5,
+        justifyContent: "center",
+        alignItems: "center",
     }
 });

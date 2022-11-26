@@ -13,7 +13,7 @@ export default function App({ navigation }) {
 
   useEffect(function () {
     async function getData() {
-      const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL,ETH-BRL');
+      const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL,ETH-BRL,LTC-BRL,CAD-BRL,UYU-BRL,JPY-BRL,DOGE-BRL');
       const data = await response.json();
 
       var myData = Object.keys(data).map(key => {
@@ -42,6 +42,7 @@ export default function App({ navigation }) {
             priceChange={item.pctChange}
             logoUri={imgUri[index]}
             codein={item.codein}
+            index = {index}
             navigation={navigation}
           />
         )}

@@ -1,8 +1,7 @@
-import react from "react";
-import { View, Text, StyleSheet, Image, Dimensions, ViewComponent } from "react-native";
+import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { LineChart, } from "react-native-chart-kit";
 
-export default function Historic({ navigation, route }) {
+export default function Historic({ route }) {
     const { name, symbol, priceChange, logoUri, data } = route.params;
     const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
 
