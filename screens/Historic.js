@@ -2,8 +2,7 @@ import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { LineChart, } from "react-native-chart-kit";
 
 export default function Historic({ route }) {
-    const { name, symbol, priceChange, logoUri, data } = route.params;
-    const priceChangeColor = priceChange > 0 ? '#03DAC5' : '#B00020';
+    const { name, symbol, data } = route.params;
 
     function currentPriceBug(symbol) {
         if (symbol === 'BTC' || symbol === 'ETH') {
