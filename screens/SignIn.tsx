@@ -10,7 +10,8 @@ export default function SignIn() {
     try {
       await signInWithGoogle();
     } catch (error) {
-      console.log(error);
+      console.log("Tiago: ", error);
+      Alert.alert("Não foi possível conectar a conta Google");
     }
   }
   return (
