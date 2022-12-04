@@ -9,14 +9,13 @@
 </br>
 </br>
 
-O aplicativo na sua primeira versão tem como objetivo de informar para o usuário
-dados em tempo real dos valores da cotação de cada moeda de paises internacionais 
-assim como de crypto moedas para o câmbio brasileiro.
+O aplicativo na sua primeira versão tem como objetivo de informar para o usuário dados em tempo real dos valores da cotação de cada moeda de paises internacionais assim como de crypto moedas para o câmbio brasileiro.
 
-O aplicativo é composto atualmente por duas telas, a primeira tela possui os cards contendo
-os nomes das moedas, valor em Real e a variação dos valores nos ultimos 7 dias.
+O aplicativo é composto atualmente por três telas, a primeira tela sendo o login com o google.
 
-A segunda tela é composta por um gráfico mostrando essa variação da moeda e informando
+A segunda possui os cards contendo os nomes das moedas, valor em Real, a variação dos valores nos ultimos 7 dias e um botão para favoritar sua moeda conectado com o firebase, assim mesmo que feche o app, seus favoritos ficaram salvos. 
+
+A terceira tela é composta por um gráfico mostrando essa variação da moeda e informando
 para o usuário uma dica para possivel investimento.
 
 ## Novas Features 🛠️
