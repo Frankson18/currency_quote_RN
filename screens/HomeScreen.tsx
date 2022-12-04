@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-native';
 import ListItem from '../components/ListItem';
-<<<<<<< HEAD:screens/HomeScreen.tsx
-import { AuthProvider, useAuth } from '../hooks/auth';
-import SignIn from './SignIn';
+import {  useAuth } from '../hooks/auth';
 
 interface navigationProps {
   navigation: any;
 }
-
 export default function HomeScreen({ navigation }: navigationProps) {
 
   const imgUri = ["http://www.blogdarisonisantos.com/images/2018/01/cifrao.png",
     "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/1024/Euro-EUR-icon.png",
-    "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+    "https://assets.coingecko.com/coins/images/1/large/bitcoin.png,?1547033579",
     "https://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/256/Ethereum-ETH-icon.png"];
 
   const [data, setData] = useState([] as any);
   const { user, signOut } = useAuth();
-=======
-export default function App({ navigation }) {
-
-  const [data, setData] = useState([]);
->>>>>>> 5890c1ea9128060038577c1cfd55432a61450a4e:screens/HomeScreen.js
 
   useEffect(function () {
     async function getData() {

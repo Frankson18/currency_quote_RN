@@ -9,7 +9,7 @@ const Stack = createStackNavigator();
 export function AuthRoutes() {
   return (
     <Stack.Navigator screenOptions={{ cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid }} >
-      <Stack.Screen name="SignIn" component={SignIn}/>
+      <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false, }}/>
     </Stack.Navigator>
   );
 }
