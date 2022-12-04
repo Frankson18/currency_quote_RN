@@ -3,8 +3,7 @@
 </br>
 
 <div width="1200" display="flex" align="center" justify-content="space-between">
-   <img src="./img/tela-principal.png" alt="Primeira tela">
-    <img src="./img/segunda-tela.png" alt="Segunda  tela">
+   <img src="./img/Expo-Go.gif" alt="Tela">
 </div>
 
 </br>
