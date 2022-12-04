@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View, SafeAreaView, Button, Image } from 'react-native';
 import ListItem from '../components/ListItem';
+<<<<<<< HEAD:screens/HomeScreen.tsx
 import { AuthProvider, useAuth } from '../hooks/auth';
 import SignIn from './SignIn';
 
@@ -17,10 +18,15 @@ export default function HomeScreen({ navigation }: navigationProps) {
 
   const [data, setData] = useState([] as any);
   const { user, signOut } = useAuth();
+=======
+export default function App({ navigation }) {
+
+  const [data, setData] = useState([]);
+>>>>>>> 5890c1ea9128060038577c1cfd55432a61450a4e:screens/HomeScreen.js
 
   useEffect(function () {
     async function getData() {
-      const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL,ETH-BRL');
+      const response = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL,ETH-BRL,LTC-BRL,CAD-BRL,UYU-BRL,JPY-BRL,DOGE-BRL');
       const data = await response.json();
 
       var myData = Object.keys(data).map(key => {
@@ -31,6 +37,7 @@ export default function HomeScreen({ navigation }: navigationProps) {
     }
     getData();
   }, []);
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -59,8 +66,8 @@ export default function HomeScreen({ navigation }: navigationProps) {
             symbol={item.code as number}
             currentPrice={item.bid}
             priceChange={item.pctChange}
-            logoUri={imgUri[index]}
             codein={item.codein}
+            index={index}
             navigation={navigation}
           />
         )}
