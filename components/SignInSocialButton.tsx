@@ -10,7 +10,7 @@ export function SignInSocialButton({title, svg: Svg, ...rest}: Props) {
   return (
     <Button
       title={title}
-      color="#fff"
+      color="#000"
       {...rest}
     />
   )
